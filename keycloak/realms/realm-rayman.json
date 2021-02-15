@@ -394,7 +394,8 @@
   "groups": [],
   "defaultRoles": [
     "uma_authorization",
-    "offline_access"
+    "offline_access",
+    "ROLE_TEST"
   ],
   "requiredCredentials": [
     "password"

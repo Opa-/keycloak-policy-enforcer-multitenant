@@ -4,7 +4,11 @@ This is an example project to demonstrate some issue when using Keycloak's Polic
 
 ## Problematic
 
-TODO
+It seems that Keycloak Spring-Boot adapter's policy-enforcer, used in a multi-tenant architecture, causes some requests to randomly respond with a 403 error code.
+
+It is unclear at the moment what is the root cause of this but from what I understand so far, this could be due to some "shared" object having the policy-enforcer URL in the Spring context.
+
+If two requests, for distinct realms, happen at the same time, there's a slight chance for one request to impact the other and having one of the request to call Keycloak policy-enforcer check on the wrong realm which result in a DENIED response from Keycloak and a 403 response from Spring.
 
 ## Build & Run
 
@@ -39,6 +43,10 @@ Open two terminal windows and execute the following commands.
 You should notice that with 1 script running you always get a 200 response code and then when you run the script against the second realms, you'll notice 403 errors happening randomly on each realm.
 
 ```sh
-python3 ./keycloak.py -keycloak_endpoint 'http://localhost:8081' -realm rayman -client_id bar -client_secret '03daa338-740e-42e8-8166-3db2b4848d4d' -username test -password test -service_endpoint 'http://localhost:8080/api/v1/foo'
-python3 ./keycloak.py -keycloak_endpoint 'http://localhost:8081' -realm globox -client_id bar -client_secret '0cfa413d-63d1-4787-a9f5-0b5ac76540ec' -username test -password test -service_endpoint 'http://localhost:8080/api/v1/foo'
+# Create users
+./create-test-users.sh
+
+# Execute the test (should be executed at the same time using different terminal windows)
+python3 ./keycloak-test.py -keycloak_endpoint 'http://localhost:8081' -realm rayman -client_id bar -client_secret '03daa338-740e-42e8-8166-3db2b4848d4d' -username test -password test -service_endpoint 'http://localhost:8080/api/v1/foo'
+python3 ./keycloak-test.py -keycloak_endpoint 'http://localhost:8081' -realm globox -client_id bar -client_secret '0cfa413d-63d1-4787-a9f5-0b5ac76540ec' -username test -password test -service_endpoint 'http://localhost:8080/api/v1/foo'
 ```
