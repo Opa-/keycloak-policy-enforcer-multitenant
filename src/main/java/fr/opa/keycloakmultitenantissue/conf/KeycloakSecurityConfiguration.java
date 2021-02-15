@@ -31,8 +31,8 @@ import javax.annotation.PostConstruct;
  */
 @KeycloakConfiguration
 @EnableConfigurationProperties(MultiTenantConfigurationProperties.class)
-@PropertySource("classpath:keycloak/policy-enforcer-config.properties")
-@PropertySource("classpath:keycloak/security-constraints.properties")
+//@PropertySource("classpath:keycloak/policy-enforcer-config.properties")
+//@PropertySource("classpath:keycloak/security-constraints.properties")
 @PropertySource("classpath:keycloak/keycloak.properties")
 public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeycloakSecurityConfiguration.class);
