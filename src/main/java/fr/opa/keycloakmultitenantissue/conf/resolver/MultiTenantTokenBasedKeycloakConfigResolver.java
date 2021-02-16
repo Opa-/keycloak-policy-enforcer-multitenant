@@ -26,12 +26,9 @@ public class MultiTenantTokenBasedKeycloakConfigResolver implements KeycloakConf
 
     private final ConcurrentHashMap<String, KeycloakDeployment> cache = new ConcurrentHashMap<>();
     private final MultiTenantConfigurationProperties multiTenantConfigurationProperties;
-    private final KeycloakSpringBootProperties keycloakSpringBootProperties;
 
-    public MultiTenantTokenBasedKeycloakConfigResolver(MultiTenantConfigurationProperties multiTenantConfigurationProperties,
-                                                       KeycloakSpringBootProperties keycloakSpringBootProperties) {
+    public MultiTenantTokenBasedKeycloakConfigResolver(MultiTenantConfigurationProperties multiTenantConfigurationProperties) {
         this.multiTenantConfigurationProperties = multiTenantConfigurationProperties;
-        this.keycloakSpringBootProperties = keycloakSpringBootProperties;
     }
 
     /**
@@ -89,9 +86,6 @@ public class MultiTenantTokenBasedKeycloakConfigResolver implements KeycloakConf
                 String issuerFromConfig = URI.create(authServerUrl + "/realms/" + realm).normalize().toString();
                 LOGGER.info("Checking JWT issuer [{}] against [{}].", issuerFromToken, issuerFromConfig);
                 if (issuerFromConfig.equals(issuerFromToken)) {
-//                    currentConfig.setSecurityConstraints(keycloakSpringBootProperties.getSecurityConstraints());
-//                    currentConfig.setPolicyEnforcerConfig(keycloakSpringBootProperties.getPolicyEnforcerConfig());
-                    LOGGER.info("Policy Enforcer set for config. Returning config for realm [{}] and issuer [{}]", realm, issuerFromConfig);
                     LOGGER.info("Realm resolved by HEADER: {}", realm);
                     return KeycloakDeploymentBuilder.build(currentConfig);
                 }
@@ -110,8 +104,6 @@ public class MultiTenantTokenBasedKeycloakConfigResolver implements KeycloakConf
     private KeycloakDeployment resolveDefault() {
         KeycloakSpringBootProperties currentConfig = new KeycloakSpringBootProperties();
         BeanUtils.copyProperties(multiTenantConfigurationProperties.getRealms().get(0), currentConfig);
-//        currentConfig.setSecurityConstraints(keycloakSpringBootProperties.getSecurityConstraints());
-//        currentConfig.setPolicyEnforcerConfig(keycloakSpringBootProperties.getPolicyEnforcerConfig());
         return KeycloakDeploymentBuilder.build(currentConfig);
     }
 

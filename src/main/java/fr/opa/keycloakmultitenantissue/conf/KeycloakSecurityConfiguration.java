@@ -3,19 +3,15 @@ package fr.opa.keycloakmultitenantissue.conf;
 import fr.opa.keycloakmultitenantissue.conf.properties.MultiTenantConfigurationProperties;
 import fr.opa.keycloakmultitenantissue.conf.resolver.MultiTenantTokenBasedKeycloakConfigResolver;
 import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
-import org.keycloak.adapters.springboot.KeycloakSpringBootProperties;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,17 +27,14 @@ import javax.annotation.PostConstruct;
  */
 @KeycloakConfiguration
 @EnableConfigurationProperties(MultiTenantConfigurationProperties.class)
-//@PropertySource("classpath:keycloak/policy-enforcer-config.properties")
-//@PropertySource("classpath:keycloak/security-constraints.properties")
+@PropertySource("classpath:keycloak/security-constraints.properties")
 @PropertySource("classpath:keycloak/keycloak.properties")
 public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeycloakSecurityConfiguration.class);
     private final MultiTenantConfigurationProperties multiTenantConfigurationProperties;
-    private final KeycloakSpringBootProperties keycloakSpringBootProperties;
 
-    public KeycloakSecurityConfiguration(MultiTenantConfigurationProperties multiTenantConfigurationProperties, KeycloakSpringBootProperties keycloakSpringBootProperties) {
+    public KeycloakSecurityConfiguration(MultiTenantConfigurationProperties multiTenantConfigurationProperties) {
         this.multiTenantConfigurationProperties = multiTenantConfigurationProperties;
-        this.keycloakSpringBootProperties = keycloakSpringBootProperties;
     }
 
     /**
@@ -65,7 +58,7 @@ public class KeycloakSecurityConfiguration extends KeycloakWebSecurityConfigurer
 
     @Bean(name = "keycloakConfigResolver")
     public KeycloakConfigResolver keycloakSpringBootConfigResolver() {
-        return new MultiTenantTokenBasedKeycloakConfigResolver(multiTenantConfigurationProperties, keycloakSpringBootProperties);
+        return new MultiTenantTokenBasedKeycloakConfigResolver(multiTenantConfigurationProperties);
     }
 
     @Override
