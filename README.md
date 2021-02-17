@@ -1,4 +1,4 @@
-The issue is now _fixed_, you can browse the pull request of the branch `fix` to check how.
+# The issue is now _fixed_, you can browse the pull request of the branch `fix` to check how.
 
 # Keycloak Policy-Enforcer Multi-tenant issue
 
