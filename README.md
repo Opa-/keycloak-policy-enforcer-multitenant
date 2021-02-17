@@ -1,3 +1,5 @@
+The issue is now _fixed_, you can browse the pull request of the branch `fix` to check how.
+
 # Keycloak Policy-Enforcer Multi-tenant issue
 
 This is an example project to demonstrate some issue when using Keycloak's Policy-Enforcers in a multi-tenant configuration.
