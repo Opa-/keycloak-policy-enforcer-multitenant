@@ -46,7 +46,7 @@ public class MultiTenantTokenBasedKeycloakConfigResolver implements KeycloakConf
         String issuer = getIssuer(request);
         LOGGER.info("Issuer: {}", issuer);
         if (issuer != null) {
-            if (!cache.contains(issuer)) {
+            if (!cache.containsKey(issuer)) {
                 cache.put(issuer, Objects.requireNonNull(resolveHeaderBased(request)));
             }
         } else {
